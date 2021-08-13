@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "jest",
-    "build": "npx webpack"
+    "build": "npx webpack",
+    "serv": "http-server . -p 8000"
   },
   "author": "",
   "license": "ISC",
