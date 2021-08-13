@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
 
   entry: {
-    index: './src/threejs.js',
+    index: './src/index.js',
     
   },/*
   devServer: {
