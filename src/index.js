@@ -15,16 +15,11 @@ const main = (function(){
         const clock = new THREE.Clock();
         let mixer;
 
-
-        
-
-        
-        loader.load(
+        loader.loadAsync(
             '/src/models/Rolodex.glb',
             (gltf)=>{
-                scene.add(gltf.scene);
-                myDex = gltf;
-                onLoad(gltf);
+                return gltf;
+
             },
             function(xhr){
                 console.log((xhr.loaded/xhr.total*100)+'% loaded');
@@ -34,6 +29,13 @@ const main = (function(){
                 console.error('An error happened');
             }
         )
+            .then(gltf=>{
+                console.log(gltf);
+                scene.add(gltf.scene);
+                myDex = gltf;
+                myDex.scene.position.x -=1;
+                onLoad(gltf);})
+            .catch((er)=>{console.log(er)});
         function animate(){
             requestAnimationFrame(animate);
            if(myDex){
@@ -49,6 +51,7 @@ const main = (function(){
             scene.add(light);
             camera.position.z = 5;
             renderer.setSize(window.innerWidth, window.innerHeight, false);
+            renderer.setClearColor(0xffbf22);
             document.body.appendChild(renderer.domElement);
             animate();
         }  
@@ -60,8 +63,11 @@ const main = (function(){
 
             window.addEventListener('click', ()=>{
                 const action = mixer.clipAction(myDex.animations[0]);
-                console.log(action);
-                action.play();
+                const secondAction = mixer.clipAction(myDex.animations[2]);
+                action.setLoop(THREE.LoopOnce);
+                action.clampWhenFinished =true;
+                secondAction.play();
+                    
             })
         }
 
