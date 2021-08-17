@@ -89,6 +89,7 @@ const main = (function(){
         function onLoadListenForMouseRotation(){
             renderer.domElement.addEventListener('mousedown', (e)=>{
                 renderer.domElement.addEventListener('mousemove', cameraRotations);
+                renderer.domElement.addEventListener('mouseleave', endCameraRotations);
                 renderer.domElement.addEventListener('mouseup', endCameraRotations);
                 e.stopPropagation();
                 
@@ -101,6 +102,7 @@ const main = (function(){
             }
             function endCameraRotations(){
                 renderer.domElement.removeEventListener('mousemove', cameraRotations);
+                renderer.domElement.removeEventListener('mouseleave', endCameraRotations);
                 renderer.domElement.removeEventListener('mouseUp', endCameraRotations);
                 console.log('hey');
             }
