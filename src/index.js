@@ -1,13 +1,16 @@
 import * as THREE from 'three';
 import { AnimationMixer, MathUtils, Vector2 } from 'three';
+import './style.css';
 
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js'
+import test from "./subPages/testPage.js";
 
 
 
 const main = (function(){
         let myDex;
+        let Title;
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const loader = new GLTFLoader();
@@ -24,14 +27,12 @@ const main = (function(){
             '/src/models/Rolodex.glb',
             (gltf)=>{
                 return gltf;
-
             },
             function(xhr){
-                console.log((xhr.loaded/xhr.total*100)+'% loaded');
+                
             },
             function(err){
-                console.log(err);
-                console.error('An error happened');
+                console.error(err);
             }
         )
             .then(gltf=>{
@@ -40,6 +41,7 @@ const main = (function(){
                 myDex.scene.position.x -=1;
                 onLoad(gltf);})
             .catch((er)=>{console.log(er)});
+
         function animate(){
             requestAnimationFrame(animate);
             
@@ -58,6 +60,7 @@ const main = (function(){
             renderer.setSize(window.innerWidth, window.innerHeight, false);
             renderer.setClearColor(0xffbf22);
             document.body.appendChild(renderer.domElement);
+            Title = test();
             animate();
         }  
 
@@ -66,12 +69,10 @@ const main = (function(){
             objects.scene.rotation.y = 4.71239;
             mixer = new AnimationMixer(myDex.scene);
             const clips = objects.animations;
-           
-
             onLoadListenForMouseRotation();
 
             //add various buttons to object here?//
-
+            
 
             
             window.addEventListener('click', ()=>{
@@ -79,10 +80,11 @@ const main = (function(){
                 const secondAction = mixer.clipAction(myDex.animations[2]);
                 action.setLoop(THREE.LoopOnce);
                 action.clampWhenFinished =true;
-                secondAction.play();
+                action.play();
 
-                
-                    
+                console.log(objects.scenes);
+
+                document.body.append(Title);
             })
         }
 
@@ -92,7 +94,6 @@ const main = (function(){
                 renderer.domElement.addEventListener('mouseleave', endCameraRotations);
                 renderer.domElement.addEventListener('mouseup', endCameraRotations);
                 e.stopPropagation();
-                
             });
             function cameraRotations(event){
                 MathUtils.clamp(camera.quaternion.y, -.02, .02);
