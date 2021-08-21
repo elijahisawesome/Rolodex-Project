@@ -6,6 +6,8 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js'
 import test from "./subPages/testPage.js";
 import modelLoader from "./models/modelLoader.js";
+import mouseHandler from './scripts/mouseEventListeners.js';
+import TWEEN from '@tweenjs/tween.js';
 
 
 
@@ -19,11 +21,12 @@ const main = (function(){
         const renderer = new THREE.WebGLRenderer();
         const clock = new THREE.Clock();
         const AMOUNT_OF_BUTTONS = 5;
+        let handler;
+        let buttons;
 
         let models = [];
         //testing stuff
-        let mouse = new THREE.Vector2();
-        const rayCaster = new THREE.Raycaster();
+
         let mixer;
 
         models = modelLoader();
@@ -33,7 +36,7 @@ const main = (function(){
             .then(results=>{
                 myDex = results[0];
                 results.shift();
-                let buttons = results;
+                buttons = results;
 
                 scene.add(myDex.scene);
                 addButtonsToScene(buttons, AMOUNT_OF_BUTTONS);
@@ -50,6 +53,7 @@ const main = (function(){
            if(!!myDex && !!mixer)
             {
                 mixer.update(clock.getDelta());
+                TWEEN.update();
             }
            
             renderer.render(scene,camera);
@@ -102,31 +106,12 @@ const main = (function(){
             mixer = new AnimationMixer(myDex.scene);
             const clips = objects.animations;
             onLoadListenForMouseRotation();
-
+            mouseHandler(renderer, scene, objects, buttons,camera, mixer);
             //add various buttons to object here?//
         }
 
         //set to click rolodex to open
-        renderer.domElement.addEventListener('click', function(e){onClick(e)});
-        function onClick(event){
-            event.preventDefault();
-            mouse.x = (event.clientX / window.innerWidth) *2-1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-            rayCaster.setFromCamera(mouse,camera);
-
-            let intersects = rayCaster.intersectObjects(scene.children,true);
-
-            if (intersects.length > 0){
-                const action = mixer.clipAction(myDex.animations[0]);
-                const secondAction = mixer.clipAction(myDex.animations[2]);
-                action.setLoop(THREE.LoopOnce);
-                action.clampWhenFinished =true;
-                action.play();
-
-                document.body.append(Title);
-            }
-        }
 
         function onLoadListenForMouseRotation(){
             renderer.domElement.addEventListener('mousedown', (e)=>{
