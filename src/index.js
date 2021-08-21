@@ -5,6 +5,7 @@ import './style.css';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js'
 import test from "./subPages/testPage.js";
+import modelLoader from "./models/modelLoader.js";
 
 
 
@@ -17,38 +18,69 @@ const main = (function(){
         const light = new THREE.PointLight();
         const renderer = new THREE.WebGLRenderer();
         const clock = new THREE.Clock();
-        
-        
+        const AMOUNT_OF_BUTTONS = 5;
+
+        let models = [];
+        //testing stuff
+        let mouse = new THREE.Vector2();
+        const rayCaster = new THREE.Raycaster();
         let mixer;
 
+        models = modelLoader();
         
 
-        loader.loadAsync(
-            '/src/models/Rolodex.glb',
-            (gltf)=>{
-                return gltf;
-            },
-            function(xhr){
+        models
+            .then(results=>{
+                myDex = results[0];
+                results.shift();
+                let buttons = results;
+
+                scene.add(myDex.scene);
+                addButtonsToScene(buttons, AMOUNT_OF_BUTTONS);
                 
-            },
-            function(err){
-                console.error(err);
-            }
-        )
-            .then(gltf=>{
-                scene.add(gltf.scene);
-                myDex = gltf;
                 myDex.scene.position.x -=1;
-                onLoad(gltf);})
+                onLoadMain(myDex);
+                positionButtons(buttons)
+            })
             .catch((er)=>{console.log(er)});
 
         function animate(){
             requestAnimationFrame(animate);
             
-           if(myDex){
+           if(!!myDex && !!mixer)
+            {
                 mixer.update(clock.getDelta());
-           }
+            }
+           
             renderer.render(scene,camera);
+        }
+        
+        function positionButtons(buttons){
+            let posx = -1.15;
+            let posy = 0;
+
+            buttons.forEach(button => {
+            if(!!button.position)
+                {       
+                button.rotation.y = 4.71239;
+                button.position.x = posx;
+                posx--;
+                /*
+                button.position.y = posy;
+                posy ++;
+                */
+                }
+            })
+        }
+        function addButtonsToScene(buttons, amt){
+            let button = buttons[0];
+            for(let x = 1; x<amt; x++)
+            {
+                let newButton = button.scene.clone();
+                scene.add(newButton);
+                buttons[x] = (newButton);
+                
+            }
         }
         
         function init(){
@@ -65,27 +97,35 @@ const main = (function(){
         }  
 
         
-        const onLoad = function (objects){
+        const onLoadMain = function (objects){
             objects.scene.rotation.y = 4.71239;
             mixer = new AnimationMixer(myDex.scene);
             const clips = objects.animations;
             onLoadListenForMouseRotation();
 
             //add various buttons to object here?//
-            
+        }
 
-            
-            window.addEventListener('click', ()=>{
+        //set to click rolodex to open
+        renderer.domElement.addEventListener('click', function(e){onClick(e)});
+        function onClick(event){
+            event.preventDefault();
+            mouse.x = (event.clientX / window.innerWidth) *2-1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            rayCaster.setFromCamera(mouse,camera);
+
+            let intersects = rayCaster.intersectObjects(scene.children,true);
+
+            if (intersects.length > 0){
                 const action = mixer.clipAction(myDex.animations[0]);
                 const secondAction = mixer.clipAction(myDex.animations[2]);
                 action.setLoop(THREE.LoopOnce);
                 action.clampWhenFinished =true;
                 action.play();
 
-                console.log(objects.scenes);
-
                 document.body.append(Title);
-            })
+            }
         }
 
         function onLoadListenForMouseRotation(){
@@ -105,7 +145,6 @@ const main = (function(){
                 renderer.domElement.removeEventListener('mousemove', cameraRotations);
                 renderer.domElement.removeEventListener('mouseleave', endCameraRotations);
                 renderer.domElement.removeEventListener('mouseUp', endCameraRotations);
-                console.log('hey');
             }
         }
         
