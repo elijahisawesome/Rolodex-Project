@@ -7,9 +7,9 @@ let myMarker = {position:{
                     z: 3.5,
                 },
                 rotation:{
-                    x: -.28,
-                    y: 0,
-                    z: 0,
+                    x: -.0847,
+                    y: -.0016,
+                    z: .00327,
                 }}
 
 const cameraMover = (function(){
@@ -20,7 +20,7 @@ const cameraMover = (function(){
         let rotTween = new TWEEN.Tween(camera.rotation);
 
         posTween.to({z: 3.5}, 500).onComplete(() => {console.log('1stFuck');});
-        rotTween.to({x:-.28}, 500).onComplete(()=>{console.log('fuck');});
+        rotTween.to({x:myMarker.rotation.x, y:myMarker.rotation.y, z:myMarker.rotation.z}, 500).onComplete(()=>{console.log('fuck');});
         
         posTween.start();
         rotTween.start();
