@@ -17,8 +17,11 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
             const action = mixer.clipAction(myDex.animations[0]);
             const secondAction = mixer.clipAction(myDex.animations[2]);
             action.setLoop(THREE.LoopOnce);
+            secondAction.setLoop(THREE.LoopOnce);
+            secondAction.clampWhenFinished = true;
             action.clampWhenFinished =true;
             action.play();
+            secondAction.play();
 
             //document.body.append(Title);
             cameraMover.initCameraMove(camera);
@@ -35,6 +38,12 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
         try{        
         switch(intersects[0].object.parent.name){
             case buttons[1].name:{
+                let secondAction = mixer.clipAction(myDex.animations[3]);
+                secondAction.setLoop(THREE.LoopOnce);
+                secondAction.clampWhenFinished = false;
+                secondAction.stop();
+                secondAction.play();
+
                 let Leaflet = myDex.scene.children[8];
                 leafletTexture = textureLoader.load(calculatorPage.image);
                 leafletTexture.wrapS = THREE.RepeatWrapping;
@@ -47,6 +56,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                 let newMaterial = new THREE.MeshBasicMaterial({map:leafletTexture});
                 Leaflet.material = newMaterial;
 
+                console.log(secondAction.enabled);
                 /*
                 ********Positioning tool
                 ********
@@ -60,7 +70,6 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                     console.log(Leaflet.material.map.offset);
 
                 },1000)*/
-
                 break
             }
             case buttons[2].name:{
