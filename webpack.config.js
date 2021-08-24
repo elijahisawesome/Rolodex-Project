@@ -32,7 +32,7 @@ module.exports = {
         test: /three\/examples\/js/,
         use: 'imports-loader?THREE=three'
       },*/
-      {
+        {
         test: /\.(glb|gltf)$/,
         use:
           [{
@@ -43,12 +43,20 @@ module.exports = {
             }
             }
           ]
-        },
+      },
         {
           test: /\.css$/i,
           use: ['style-loader', 'css-loader'],
         },
-    ]
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
+      ],
   },
   output: {
     filename: '[name].bundle.js',

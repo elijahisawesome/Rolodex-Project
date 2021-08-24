@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
+import calculatorPage from '../subPages/CalculatorPage.js'
 
 let mouse = new THREE.Vector2();
 const rayCaster = new THREE.Raycaster();
+const textureLoader = new THREE.TextureLoader();
+let leafletTexture;
 
 const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     renderer.domElement.addEventListener('click', initialOnClick, false);
@@ -28,9 +31,17 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     function listenForButtonClicks(event){
         event.preventDefault();
         let intersects = castCalc(event, scene.children)
+        try{        
         switch(intersects[0].object.parent.name){
             case buttons[1].name:{
-                console.log('1');
+                let Leaflet = myDex.scene.children[8];
+                leafletTexture = textureLoader.load(calculatorPage.image);
+                //leafletTexture.wrapS = THREE.RepeatWrapping;
+                //leafletTexture.wrapT = THREE.RepeatWrapping;
+                leafletTexture.repeat.set(1,1);
+                
+                let newMaterial = new THREE.MeshBasicMaterial({map:leafletTexture});
+                Leaflet.material = newMaterial;
                 break
             }
             case buttons[2].name:{
@@ -46,8 +57,10 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                 break
             }
             default:
-                console.log(intersects[0].object);
                 break
+        }}
+        catch(error){
+
         }
         
     }
