@@ -7,6 +7,7 @@ let mouse = new THREE.Vector2();
 const rayCaster = new THREE.Raycaster();
 const textureLoader = new THREE.TextureLoader();
 let leafletTexture;
+let currentURL;
 
 const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     renderer.domElement.addEventListener('click', initialOnClick, false);
@@ -35,41 +36,22 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     function listenForButtonClicks(event){
         event.preventDefault();
         let intersects = castCalc(event, scene.children)
+
+
         try{        
+
+            if(intersects[0].object.name == myDex.scene.children[8].name){
+                window.location.href = currentURL;
+                return;
+            }
+
         switch(intersects[0].object.parent.name){
             case buttons[1].name:{
-                let secondAction = mixer.clipAction(myDex.animations[3]);
-                secondAction.setLoop(THREE.LoopOnce);
-                secondAction.clampWhenFinished = false;
-                secondAction.stop();
-                secondAction.play();
-
-                let Leaflet = myDex.scene.children[8];
-                leafletTexture = textureLoader.load(calculatorPage.image);
-                leafletTexture.wrapS = THREE.RepeatWrapping;
-                leafletTexture.wrapT = THREE.RepeatWrapping;
-                leafletTexture.repeat.set(2,.7);
-                leafletTexture.rotation = Math.PI*.5;
-                leafletTexture.offset = new Vector2(-.25, -.4);
-                leafletTexture.flipY = false;
-                
-                let newMaterial = new THREE.MeshBasicMaterial({map:leafletTexture});
-                Leaflet.material = newMaterial;
-
-                console.log(secondAction.enabled);
-                /*
-                ********Positioning tool
-                ********
-                
-                let posx =0,
-                    posy = 0;
-
-                setInterval(()=>{
-                    posy+= .05;
-                    Leaflet.material.map.offset = new Vector2(posx, posy);
-                    console.log(Leaflet.material.map.offset);
-
-                },1000)*/
+                animationPlayer(mixer.clipAction(myDex.animations[3]));
+                setTimeout (function(){
+                textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo);
+                currentURL = calculatorPage.URL;
+                }, 150)
                 break
             }
             case buttons[2].name:{
@@ -84,7 +66,12 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                 console.log('4');
                 break
             }
+            case myDex.scene.children[8].name:{
+                console.log('5');
+                break
+            }
             default:
+                console.log(myDex.children[8]);
                 break
         }}
         catch(error){
@@ -93,6 +80,29 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
         
     }
 
+
+    const animationPlayer = function(target){
+        let action = target;
+        action.setLoop(THREE.LoopOnce);
+        action.clampWhenFinished = false;
+        action.stop();
+        action.play();
+    }
+
+    
+    const textureSetup = function(target, obj){
+        let Leaflet = target;
+        leafletTexture = textureLoader.load(calculatorPage.image);
+        leafletTexture.wrapS = THREE.RepeatWrapping;
+        leafletTexture.wrapT = THREE.RepeatWrapping;
+        leafletTexture.repeat.set(obj.scalex,obj.scaley);
+        leafletTexture.rotation = obj.rotation;
+        leafletTexture.offset = obj.offset;
+        leafletTexture.flipY = false;
+
+        let newMaterial = new THREE.MeshBasicMaterial({map:leafletTexture});
+        Leaflet.material = newMaterial;
+    }
 
     const castCalc = function(event, target){
         event.preventDefault();
@@ -107,3 +117,20 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
 
 
 export default mouseHandler;
+
+
+
+
+/*
+                ********Positioning tool
+                ********
+                
+                let posx =0,
+                    posy = 0;
+
+                setInterval(()=>{
+                    posy+= .05;
+                    Leaflet.material.map.offset = new Vector2(posx, posy);
+                    console.log(Leaflet.material.map.offset);
+
+                },1000)*/
