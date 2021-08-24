@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js'
+import { Vector2 } from 'three';
 
 let mouse = new THREE.Vector2();
 const rayCaster = new THREE.Raycaster();
@@ -36,12 +37,30 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
             case buttons[1].name:{
                 let Leaflet = myDex.scene.children[8];
                 leafletTexture = textureLoader.load(calculatorPage.image);
-                //leafletTexture.wrapS = THREE.RepeatWrapping;
-                //leafletTexture.wrapT = THREE.RepeatWrapping;
-                leafletTexture.repeat.set(1,1);
+                leafletTexture.wrapS = THREE.RepeatWrapping;
+                leafletTexture.wrapT = THREE.RepeatWrapping;
+                leafletTexture.repeat.set(2,.7);
+                leafletTexture.rotation = Math.PI*.5;
+                leafletTexture.offset = new Vector2(-.25, -.4);
+                leafletTexture.flipY = false;
                 
                 let newMaterial = new THREE.MeshBasicMaterial({map:leafletTexture});
                 Leaflet.material = newMaterial;
+
+                /*
+                ********Positioning tool
+                ********
+                
+                let posx =0,
+                    posy = 0;
+
+                setInterval(()=>{
+                    posy+= .05;
+                    Leaflet.material.map.offset = new Vector2(posx, posy);
+                    console.log(Leaflet.material.map.offset);
+
+                },1000)*/
+
                 break
             }
             case buttons[2].name:{
