@@ -61,7 +61,6 @@ const main = (function(){
         
         function positionButtons(buttons){
             let posx = -1.15;
-            let posy = 0;
 
             buttons.forEach(button => {
             if(!!button.position)
@@ -69,10 +68,6 @@ const main = (function(){
                 button.rotation.y = 4.71239;
                 button.position.x = posx;
                 posx--;
-                /*
-                button.position.y = posy;
-                posy ++;
-                */
                 }
             })
         }
@@ -81,9 +76,9 @@ const main = (function(){
             for(let x = 1; x<amt; x++)
             {
                 let newButton = button.scene.clone();
-                scene.add(newButton);
+                newButton.name = x;
                 buttons[x] = (newButton);
-                
+                scene.add(newButton);
             }
         }
         

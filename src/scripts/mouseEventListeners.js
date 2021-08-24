@@ -28,9 +28,26 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     function listenForButtonClicks(event){
         event.preventDefault();
         let intersects = castCalc(event, scene.children)
-        //throw into a loop, iterate with appropriate logic.1
-        if(intersects.length > 0){
-            console.log(intersects[0].object);
+        switch(intersects[0].object.parent.name){
+            case buttons[1].name:{
+                console.log('1');
+                break
+            }
+            case buttons[2].name:{
+                console.log('2');
+                break
+            }
+            case buttons[3].name:{
+                console.log('3');
+                break
+            }
+            case buttons[4].name:{
+                console.log('4');
+                break
+            }
+            default:
+                console.log(intersects[0].object);
+                break
         }
         
     }
