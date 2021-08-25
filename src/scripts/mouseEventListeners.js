@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
-import calculatorPage from '../subPages/CalculatorPage.js'
+import calculatorPage from '../subPages/CalculatorPage.js';
+import battleshipPage from '../subPages/BattleshipPage.js';
 import { Vector2 } from 'three';
 
 let mouse = new THREE.Vector2();
@@ -49,13 +50,17 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
             case buttons[1].name:{
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
                 setTimeout (function(){
-                textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo);
+                textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
                 currentURL = calculatorPage.URL;
                 }, 150)
                 break
             }
             case buttons[2].name:{
-                console.log('2');
+                animationPlayer(mixer.clipAction(myDex.animations[3]));
+                setTimeout (function(){
+                textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
+                currentURL = battleshipPage.URL;
+                }, 150)
                 break
             }
             case buttons[3].name:{
@@ -66,12 +71,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                 console.log('4');
                 break
             }
-            case myDex.scene.children[8].name:{
-                console.log('5');
-                break
-            }
             default:
-                console.log(myDex.children[8]);
                 break
         }}
         catch(error){
@@ -90,9 +90,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
     }
 
     
-    const textureSetup = function(target, obj){
+    const textureSetup = function(target, obj, image){
         let Leaflet = target;
-        leafletTexture = textureLoader.load(calculatorPage.image);
+        leafletTexture = textureLoader.load(image);
         leafletTexture.wrapS = THREE.RepeatWrapping;
         leafletTexture.wrapT = THREE.RepeatWrapping;
         leafletTexture.repeat.set(obj.scalex,obj.scaley);
