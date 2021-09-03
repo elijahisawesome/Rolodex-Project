@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js';
 import battleshipPage from '../subPages/BattleshipPage.js';
+import CVPage from '../subPages/CVPage.js';
 import { Vector2 } from 'three';
 
 let mouse = new THREE.Vector2();
@@ -9,8 +10,9 @@ const rayCaster = new THREE.Raycaster();
 const textureLoader = new THREE.TextureLoader();
 let leafletTexture;
 let currentURL;
+let prevIntersect;
 
-const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
+const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, ambient, rolodexOpen, audioHoverSelect, audioLoader){
     renderer.domElement.addEventListener('click', initialOnClick, false);
     function initialOnClick(event){
         let intersects = castCalc(event, scene.children);
@@ -22,6 +24,8 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
             secondAction.setLoop(THREE.LoopOnce);
             secondAction.clampWhenFinished = true;
             action.clampWhenFinished =true;
+            playRolodexOpenSound();
+            playButtonHoverSound();
             action.play();
             secondAction.play();
 
@@ -29,11 +33,53 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
             cameraMover.initCameraMove(camera);
             renderer.domElement.removeEventListener('click', initialOnClick ,false);
             renderer.domElement.addEventListener('click', listenForButtonClicks, false);
+            renderer.domElement.addEventListener('mousemove', listenForHovers, false)
         }
         
         
         
     }
+    function playRolodexOpenSound(){
+        audioLoader.load('../src/sounds/Rolodex_Sounds_DeepBass.mp3',(buffer)=>{
+            rolodexOpen.setBuffer(buffer);
+            rolodexOpen.setLoop(false);
+            rolodexOpen.setVolume(.2);
+            rolodexOpen.play();
+        })
+    }
+    function playButtonHoverSound(){
+        audioLoader.load('../src/sounds/Rolodex_Sounds_BrightChime.mp3', (buffer)=>{
+            audioHoverSelect.setBuffer(buffer);
+            audioHoverSelect.setLoop(false);
+            audioHoverSelect.setVolume(.025);
+            audioHoverSelect.duration = 1.5;
+        })
+    }
+
+    function listenForHovers(event){
+        let intersects = castCalc(event, scene.children)
+        try{
+            switch(intersects[0].object.parent.name){
+                case buttons[1].name:
+                case buttons[2].name:
+                case buttons[3].name:
+                case buttons[4].name:
+
+                    if(prevIntersect != intersects[0].object.uuid){
+                        prevIntersect = intersects[0].object.uuid;
+                        audioHoverSelect.play();}
+                        break;
+                        
+                default:
+                    prevIntersect = 0;    
+                }
+                
+        }
+        catch(error){
+            
+        }
+    }
+
     function listenForButtonClicks(event){
         event.preventDefault();
         let intersects = castCalc(event, scene.children)
@@ -64,7 +110,11 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer){
                 break
             }
             case buttons[3].name:{
-                console.log('3');
+                animationPlayer(mixer.clipAction(myDex.animations[3]));
+                setTimeout(function(){
+                    textureSetup(myDex.scene.children[8],CVPage.TextureInfo, CVPage.image);
+                currentURL = CVPage.URL;
+                })
                 break
             }
             case buttons[4].name:{

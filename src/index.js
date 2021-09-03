@@ -21,6 +21,11 @@ const main = (function(){
         const renderer = new THREE.WebGLRenderer();
         const clock = new THREE.Clock();
         const AMOUNT_OF_BUTTONS = 5;
+        const listener = new THREE.AudioListener();
+        const audioLoader = new THREE.AudioLoader();
+        let ambient;
+        let audioHoverSelect;
+        let rolodexOpen;
         let handler;
         let buttons;
 
@@ -40,6 +45,7 @@ const main = (function(){
 
                 scene.add(myDex.scene);
                 addButtonsToScene(buttons, AMOUNT_OF_BUTTONS);
+                
                 
                 myDex.scene.position.x -=1;
                 onLoadMain(myDex);
@@ -83,6 +89,11 @@ const main = (function(){
         }
         
         function init(){
+            camera.add(listener);
+            ambient = new THREE.Audio(listener);
+            audioHoverSelect = new THREE.Audio(listener);
+            rolodexOpen= new THREE.Audio(listener);
+
             light.position.x = 5;
             light.position.y = 5;
             light.position.z = 2;
@@ -93,6 +104,7 @@ const main = (function(){
             document.body.appendChild(renderer.domElement);
             Title = test();
             animate();
+            playDefaultAudio();
         }  
 
         
@@ -101,13 +113,8 @@ const main = (function(){
             mixer = new AnimationMixer(myDex.scene);
             const clips = objects.animations;
             onLoadListenForMouseRotation();
-            mouseHandler(renderer, scene, objects, buttons,camera, mixer);
-            //add various buttons to object here?//
+            mouseHandler(renderer, scene, objects, buttons,camera, mixer, ambient, rolodexOpen, audioHoverSelect, audioLoader);
         }
-
-        //set to click rolodex to open
-
-
         function onLoadListenForMouseRotation(){
             renderer.domElement.addEventListener('mousedown', (e)=>{
                 renderer.domElement.addEventListener('mousemove', cameraRotations);
@@ -127,7 +134,14 @@ const main = (function(){
                 renderer.domElement.removeEventListener('mouseUp', endCameraRotations);
             }
         }
-        
+        function playDefaultAudio(){
+            audioLoader.load('../src/sounds/Rolodex_Sounds_Drone.mp3', (buffer)=>{
+                ambient.setBuffer(buffer);
+                ambient.setLoop(true);
+                ambient.setVolume(.25);
+                ambient.play();
+            })
+        }
 
         init();
 
