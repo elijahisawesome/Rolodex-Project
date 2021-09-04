@@ -5,10 +5,11 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "jest",
-    "build": "npx webpack",
-    "buildDev": "webpack --config webpack.dev.js",
     "buildProd": "webpack --config webpack.prod.js",
-    "serv": "http-server . -p 8000"
+    "buildDev": "webpack --config webpack.dev.js",
+    "build": "npx webpack",
+    "serv": "http-server . -p 8000",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "@tweenjs/tween.js": "^18.6.4",
     "css-loader": "^6.2.0",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.2.3",
     "style-loader": "^3.2.1",
     "three": "^0.131.3",
     "webpack-dev-server": "^3.11.2",
