@@ -12,7 +12,8 @@ let leafletTexture;
 let currentURL;
 let prevIntersect;
 
-const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, ambient, rolodexOpen, audioHoverSelect, audioLoader){
+//move this mess to props
+const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, ambient, rolodexOpen,cardFlip, audioHoverSelect, audioLoader){
     renderer.domElement.addEventListener('click', initialOnClick, false);
     function initialOnClick(event){
         let intersects = castCalc(event, scene.children);
@@ -26,6 +27,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
             action.clampWhenFinished =true;
             playRolodexOpenSound();
             playButtonHoverSound();
+            playCardFlipSound();
             action.play();
             secondAction.play();
 
@@ -53,6 +55,14 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
             audioHoverSelect.setLoop(false);
             audioHoverSelect.setVolume(.025);
             audioHoverSelect.duration = 1.5;
+        })
+    }
+    function playCardFlipSound(){
+        audioLoader.load('../src/sounds/Rolodex_Sounds_CardFlip.mp3',(buffer)=>{
+            cardFlip.setBuffer(buffer);
+            cardFlip.setLoop(false);
+            cardFlip.setVolume(.8);
+            cardFlip.play();
         })
     }
 
@@ -99,6 +109,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
                 currentURL = calculatorPage.URL;
                 }, 150)
+                cardFlip.play();
                 break
             }
             case buttons[2].name:{
@@ -107,6 +118,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
                 currentURL = battleshipPage.URL;
                 }, 150)
+                cardFlip.play();
                 break
             }
             case buttons[3].name:{
@@ -115,6 +127,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                     textureSetup(myDex.scene.children[8],CVPage.TextureInfo, CVPage.image);
                 currentURL = CVPage.URL;
                 })
+                cardFlip.play();
                 break
             }
             case buttons[4].name:{

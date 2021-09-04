@@ -26,6 +26,7 @@ const main = (function(){
         let ambient;
         let audioHoverSelect;
         let rolodexOpen;
+        let cardFlip;
         let handler;
         let buttons;
 
@@ -93,6 +94,7 @@ const main = (function(){
             ambient = new THREE.Audio(listener);
             audioHoverSelect = new THREE.Audio(listener);
             rolodexOpen= new THREE.Audio(listener);
+            cardFlip = new THREE.Audio(listener);
 
             light.position.x = 5;
             light.position.y = 5;
@@ -113,7 +115,7 @@ const main = (function(){
             mixer = new AnimationMixer(myDex.scene);
             const clips = objects.animations;
             onLoadListenForMouseRotation();
-            mouseHandler(renderer, scene, objects, buttons,camera, mixer, ambient, rolodexOpen, audioHoverSelect, audioLoader);
+            mouseHandler(renderer, scene, objects, buttons,camera, mixer, ambient, rolodexOpen,cardFlip, audioHoverSelect, audioLoader);
         }
         function onLoadListenForMouseRotation(){
             renderer.domElement.addEventListener('mousedown', (e)=>{
