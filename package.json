@@ -6,6 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "npx webpack",
+    "buildDev": "webpack --config webpack.dev.js",
+    "buildProd": "webpack --config webpack.prod.js",
     "serv": "http-server . -p 8000"
   },
   "author": "",
