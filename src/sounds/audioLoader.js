@@ -24,6 +24,9 @@ function playCardFlipSound(){
     })
 }
 */
+
+console.log(process.env.NODE_ENV);
+
 const audioLoader = function(aLoader,sound, location,volume,immediatePlaying){
     if(process.env.NODE_ENV == 'production'){
         location ='/Rolodex-Portfolio/'+ location;
