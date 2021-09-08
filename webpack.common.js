@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { argv } = require('process');
 
+
 module.exports = {
 
   entry: {
@@ -21,6 +22,7 @@ module.exports = {
       title: 'Elijah\'s Portfolio!',
 
     }),
+
 
   ],
   module: {
@@ -60,7 +62,7 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
-    publicPath: argv.mode ==='production'?'/Rolodex-Project':'/dist'
+    //publicPath: this.mode === 'production'?'/Rolodex-Project':'/dist'
   }
 
 

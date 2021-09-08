@@ -3,6 +3,8 @@ import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js';
 import battleshipPage from '../subPages/BattleshipPage.js';
 import CVPage from '../subPages/CVPage.js';
+import soundLoader from '../sounds/audioLoader.js';
+import Constants from '../Constants.js';
 import { Vector2 } from 'three';
 
 let mouse = new THREE.Vector2();
@@ -19,53 +21,33 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
         let intersects = castCalc(event, scene.children);
 
         if (intersects.length > 0){
-            const action = mixer.clipAction(myDex.animations[0]);
-            const secondAction = mixer.clipAction(myDex.animations[2]);
-            action.setLoop(THREE.LoopOnce);
-            secondAction.setLoop(THREE.LoopOnce);
-            secondAction.clampWhenFinished = true;
-            action.clampWhenFinished =true;
-            playRolodexOpenSound();
-            playButtonHoverSound();
-            playCardFlipSound();
-            action.play();
-            secondAction.play();
 
-            //document.body.append(Title);
+            animationPlayer(mixer.clipAction(myDex.animations[0]), true);
+            animationPlayer(mixer.clipAction(myDex.animations[2]), true);
+            loadSounds();
+
             cameraMover.initCameraMove(camera);
             renderer.domElement.removeEventListener('click', initialOnClick ,false);
             renderer.domElement.addEventListener('click', listenForButtonClicks, false);
             renderer.domElement.addEventListener('mousemove', listenForHovers, false)
         }
-        
-        
-        
-    }
-    function playRolodexOpenSound(){
-        audioLoader.load('../src/sounds/Rolodex_Sounds_DeepBass.mp3',(buffer)=>{
-            rolodexOpen.setBuffer(buffer);
-            rolodexOpen.setLoop(false);
-            rolodexOpen.setVolume(.2);
-            rolodexOpen.play();
-        })
-    }
-    function playButtonHoverSound(){
-        audioLoader.load('../src/sounds/Rolodex_Sounds_BrightChime.mp3', (buffer)=>{
-            audioHoverSelect.setBuffer(buffer);
-            audioHoverSelect.setLoop(false);
-            audioHoverSelect.setVolume(.025);
-            audioHoverSelect.duration = 1.5;
-        })
-    }
-    function playCardFlipSound(){
-        audioLoader.load('../src/sounds/Rolodex_Sounds_CardFlip.mp3',(buffer)=>{
-            cardFlip.setBuffer(buffer);
-            cardFlip.setLoop(false);
-            cardFlip.setVolume(.8);
-            cardFlip.play();
-        })
     }
 
+
+    function loadSounds(){
+        soundLoader(audioLoader, rolodexOpen, webpackAudioLoadingSubroutine(Constants.AUDIO_ROLODEX_OPEN), .2,true);
+        soundLoader(audioLoader, audioHoverSelect, webpackAudioLoadingSubroutine(Constants.AUDIO_BUTTON_HOVER), .025,false);
+        soundLoader(audioLoader, cardFlip,webpackAudioLoadingSubroutine(Constants.AUDIO_ROLODEX_CARD_FLIP),.8,true);
+    }
+    function webpackAudioLoadingSubroutine(loc){
+        let val = '/Rolodex-Project/';
+        let finalLoc = loc;
+        if(process.env.NODE_ENV == 'production'){
+            finalLoc = val+loc;
+        }
+        return finalLoc;
+    }
+    
     function listenForHovers(event){
         let intersects = castCalc(event, scene.children)
         try{
@@ -77,6 +59,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
 
                     if(prevIntersect != intersects[0].object.uuid){
                         prevIntersect = intersects[0].object.uuid;
+                    if(audioHoverSelect.isPlaying){audioHoverSelect.stop();}
                         audioHoverSelect.play();}
                         break;
                         
@@ -144,10 +127,10 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
     }
 
 
-    const animationPlayer = function(target){
+    const animationPlayer = function(target, clamp){
         let action = target;
         action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = false;
+        action.clampWhenFinished = clamp||false;
         action.stop();
         action.play();
     }
