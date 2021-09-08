@@ -1,4 +1,4 @@
-/*v
+/*
 function playRolodexOpenSound(){
     audioLoader.load('../src/sounds/Rolodex_Sounds_DeepBass.mp3',(buffer)=>{
         rolodexOpen.setBuffer(buffer);
@@ -25,12 +25,14 @@ function playCardFlipSound(){
 }
 */
 
-console.log(process.env.NODE_ENV);
 
 const audioLoader = function(aLoader,sound, location,volume,immediatePlaying){
+    /*
+    //Github pages automation, get working later.
     if(process.env.NODE_ENV == 'production'){
         location ='/Rolodex-Portfolio/'+ location;
-    }
+    }*/
+
     aLoader.load(location, (buffer)=>{
         sound.setBuffer(buffer);
         sound.setLoop(false);

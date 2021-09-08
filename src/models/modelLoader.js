@@ -1,17 +1,23 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+
+
+
 const modelLoader = function(){
     let models;
     let loader = new GLTFLoader();
     let buttonLoc = '/src/models/Default_Button.glb';
     let dexLoc = '/src/models/Rolodex.glb';
+    let tableAndRoomLoc = '/src/models/Rest_Of_Room.glb';
 
-    console.log(process.env.NODE_ENV);
-
+    
+    //gh pages workaround.
     if (process.env.NODE_ENV == 'production'){
         buttonLoc = '/Rolodex-Project/' + buttonLoc;
         dexLoc = '/Rolodex-Project/' + dexLoc;
+        tableAndRoomLoc = '/Rolodex-Project/' + tableAndRoomLoc;
+        console.log('FUCK IIIIIITTTTT');
     }
 
     let defaultButton = loader.loadAsync(
@@ -24,7 +30,12 @@ const modelLoader = function(){
         null,
         function(error){console.log(error)});
 
-        return Promise.all([Rolodex, defaultButton]).then((results)=>{
+    let tableAndRoom = loader.loadAsync(
+        tableAndRoomLoc,
+        null,
+        function(error){console.log(error)});
+    
+        return Promise.all([Rolodex, defaultButton, tableAndRoom]).then((results)=>{
         models = results;
         return models;
     });

@@ -20,19 +20,11 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
         let intersects = castCalc(event, scene.children);
 
         if (intersects.length > 0){
-            /*
-            const action = mixer.clipAction(myDex.animations[0]);
-            const secondAction = mixer.clipAction(myDex.animations[2]);
-            action.setLoop(THREE.LoopOnce);
-            secondAction.setLoop(THREE.LoopOnce);
-            secondAction.clampWhenFinished = true;
-            action.clampWhenFinished =true;*/
 
-            animationPlayer(mixer.clipAction(myDex.animations[0]));
-            animationPlayer(mixer.clipAction(myDex.animations[2]));
+            animationPlayer(mixer.clipAction(myDex.animations[0]), true);
+            animationPlayer(mixer.clipAction(myDex.animations[2]), true);
             loadSounds();
 
-            //document.body.append(Title);
             cameraMover.initCameraMove(camera);
             renderer.domElement.removeEventListener('click', initialOnClick ,false);
             renderer.domElement.addEventListener('click', listenForButtonClicks, false);
@@ -42,7 +34,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
     function loadSounds(){
         soundLoader(audioLoader, rolodexOpen, '../src/sounds/Rolodex_Sounds_DeepBass.mp3', .2,true);
         soundLoader(audioLoader, audioHoverSelect, '../src/sounds/Rolodex_Sounds_BrightChime.mp3', .025,false);
-        soundLoader(audioLoader, cardFlip,'../src/sounds/Rolodex_vvSounds_CardFlip.mp3',.8,true);
+        soundLoader(audioLoader, cardFlip,'../src/sounds/Rolodex_Sounds_CardFlip.mp3',.8,true);
     }
     
     function listenForHovers(event){
@@ -56,6 +48,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
 
                     if(prevIntersect != intersects[0].object.uuid){
                         prevIntersect = intersects[0].object.uuid;
+                    if(audioHoverSelect.isPlaying){audioHoverSelect.stop();}
                         audioHoverSelect.play();}
                         break;
                         
@@ -123,10 +116,10 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
     }
 
 
-    const animationPlayer = function(target){
+    const animationPlayer = function(target, clamp){
         let action = target;
         action.setLoop(THREE.LoopOnce);
-        action.clampWhenFinished = false;
+        action.clampWhenFinished = clamp||false;
         action.stop();
         action.play();
     }

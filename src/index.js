@@ -27,6 +27,7 @@ const main = (function(){
         let audioHoverSelect;
         let rolodexOpen;
         let cardFlip;
+        let restOfRoom;
         let handler;
         let buttons;
 
@@ -41,14 +42,18 @@ const main = (function(){
         models
             .then(results=>{
                 myDex = results[0];
+                restOfRoom = results.pop();
                 results.shift();
                 buttons = results;
 
                 scene.add(myDex.scene);
+                scene.add(restOfRoom.scene);
                 addButtonsToScene(buttons, AMOUNT_OF_BUTTONS);
                 
+                correctlyPositionRolodexAndRoom(restOfRoom);
                 
                 myDex.scene.position.x -=1;
+                restOfRoom.scene.position.x -=1;
                 onLoadMain(myDex);
                 positionButtons(buttons)
             })
@@ -66,6 +71,9 @@ const main = (function(){
             renderer.render(scene,camera);
         }
         
+        function correctlyPositionRolodexAndRoom(object){
+            object.scene.rotation.y = 4.71239;
+        }
         function positionButtons(buttons){
             let posx = -1.15;
 
@@ -102,7 +110,7 @@ const main = (function(){
             scene.add(light);
             camera.position.z = 5;
             renderer.setSize(window.innerWidth, window.innerHeight, false);
-            renderer.setClearColor(0xffbf22);
+            renderer.setClearColor(0x000000);
             document.body.appendChild(renderer.domElement);
             Title = test();
             animate();

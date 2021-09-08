@@ -1,4 +1,4 @@
-import img from './Images/Battleship_cropped.jpg';
+import img from './Images/CV_Cropped.jpg';
 import * as THREE from 'three';
 
 const CVPage = (function(){
