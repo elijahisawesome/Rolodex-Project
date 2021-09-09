@@ -6,7 +6,7 @@ import CVPage from '../subPages/CVPage.js';
 import EtchASketchPage from '../subPages/EtchinSketchin.js';
 import soundLoader from '../sounds/audioLoader.js';
 import Constants from '../Constants.js';
-import { Vector2 } from 'three';
+
 
 
 let mouse = new THREE.Vector2();

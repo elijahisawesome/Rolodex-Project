@@ -1,8 +1,7 @@
 import * as THREE from 'three';
-import { AnimationMixer, MathUtils, Vector2 } from 'three';
+import { AnimationMixer, MathUtils} from 'three';
 import './style.css';
 
-import test from "./subPages/testPage.js";
 import modelLoader from "./models/modelLoader.js";
 import mouseHandler from './scripts/mouseEventListeners.js';
 import soundLoader from './sounds/audioLoader.js';
@@ -14,7 +13,7 @@ import Constants from './Constants.js';
 const main = (function(){
         let myDex;
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
         const light = new THREE.PointLight();
         const renderer = new THREE.WebGLRenderer();
         const clock = new THREE.Clock();
@@ -99,10 +98,13 @@ const main = (function(){
             light.position.y = 5;
             light.position.z = 2;
             scene.add(light);
-            camera.position.z = 5;
+            camera.position.z = 8;
+            camera.position.y = 3;
+            camera.rotation.x = -.087;
             renderer.setSize(window.innerWidth, window.innerHeight, false);
             renderer.setClearColor(0x000000);
             document.body.appendChild(renderer.domElement);
+            window.addEventListener( 'resize', onWindowResize, false );
             animate();
             playDefaultAudio();
         }  
@@ -111,10 +113,10 @@ const main = (function(){
         const onLoadMain = function (objects){
             objects.scene.rotation.y = 4.71239;
             mixer = new AnimationMixer(myDex.scene);
-            const clips = objects.animations;
             onLoadListenForMouseRotation();
             mouseHandler(renderer, scene, objects, buttons,camera, mixer, ambient, rolodexOpen,cardFlip, audioHoverSelect, audioLoader);
         }
+
         function onLoadListenForMouseRotation(){
             renderer.domElement.addEventListener('mousedown', (e)=>{
                 renderer.domElement.addEventListener('mousemove', cameraRotations);
@@ -136,6 +138,12 @@ const main = (function(){
         }
         function playDefaultAudio(){
             soundLoader(audioLoader,ambient, Constants.AUDIO_INITIAL_DRONE,.25,true)
+        }
+        
+        function onWindowResize(){
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
         }
 
         init();

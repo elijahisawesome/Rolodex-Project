@@ -19,8 +19,8 @@ const cameraMover = (function(){
         let posTween = new TWEEN.Tween(camera.position);
         let rotTween = new TWEEN.Tween(camera.rotation);
 
-        posTween.to({z: 3.5}, 500).onComplete(() => {console.log('1stFuck');});
-        rotTween.to({x:myMarker.rotation.x, y:myMarker.rotation.y, z:myMarker.rotation.z}, 500).onComplete(()=>{console.log('fuck');});
+        posTween.to({z: 3.5,y:0}, 500);
+        rotTween.to({x:myMarker.rotation.x, y:myMarker.rotation.y, z:myMarker.rotation.z}, 500);
         
         posTween.start();
         rotTween.start();
