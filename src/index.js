@@ -29,7 +29,7 @@ const main = (function(){
         let buttons;
         let mixer;
 
-        models = modelLoader();
+        let models = modelLoader();
         models
             .then(results=>{
                 myDex = results[0];
