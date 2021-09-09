@@ -103,7 +103,6 @@ const main = (function(){
             renderer.setSize(window.innerWidth, window.innerHeight, false);
             renderer.setClearColor(0x000000);
             document.body.appendChild(renderer.domElement);
-            Title = test();
             animate();
             playDefaultAudio();
         }  
