@@ -14,6 +14,8 @@ const { webpack } =require('webpack');
       'NodeEnv': 'development'
     }),
   ],
-  
+  output: {
+    publicPath: '/dist/'
+  }
 
  });

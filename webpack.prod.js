@@ -10,5 +10,8 @@ const { EnvironmentPlugin } =require('webpack');
     new EnvironmentPlugin({
       NodeENV:'production',
     }),
-   ]
+   ],
+   output:{
+      publicPath: '/Rolodex-Project/'
+   }
  });

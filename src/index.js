@@ -2,21 +2,19 @@ import * as THREE from 'three';
 import { AnimationMixer, MathUtils, Vector2 } from 'three';
 import './style.css';
 
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.js'
 import test from "./subPages/testPage.js";
 import modelLoader from "./models/modelLoader.js";
 import mouseHandler from './scripts/mouseEventListeners.js';
+import soundLoader from './sounds/audioLoader.js';
 import TWEEN from '@tweenjs/tween.js';
+import Constants from './Constants.js';
 
 
 
 const main = (function(){
         let myDex;
-        let Title;
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const loader = new GLTFLoader();
         const light = new THREE.PointLight();
         const renderer = new THREE.WebGLRenderer();
         const clock = new THREE.Clock();
@@ -28,17 +26,10 @@ const main = (function(){
         let rolodexOpen;
         let cardFlip;
         let restOfRoom;
-        let handler;
         let buttons;
-
-        let models = [];
-        //testing stuff
-
         let mixer;
 
-        models = modelLoader();
-        
-
+        let models = modelLoader();
         models
             .then(results=>{
                 myDex = results[0];
@@ -112,7 +103,6 @@ const main = (function(){
             renderer.setSize(window.innerWidth, window.innerHeight, false);
             renderer.setClearColor(0x000000);
             document.body.appendChild(renderer.domElement);
-            Title = test();
             animate();
             playDefaultAudio();
         }  
@@ -145,12 +135,7 @@ const main = (function(){
             }
         }
         function playDefaultAudio(){
-            audioLoader.load('../src/sounds/Rolodex_Sounds_Drone.mp3', (buffer)=>{
-                ambient.setBuffer(buffer);
-                ambient.setLoop(true);
-                ambient.setVolume(.25);
-                ambient.play();
-            })
+            soundLoader(audioLoader,ambient, Constants.AUDIO_INITIAL_DRONE,.25,true)
         }
 
         init();
