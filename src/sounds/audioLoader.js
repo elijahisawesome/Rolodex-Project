@@ -28,10 +28,6 @@ function playCardFlipSound(){
 
 const audioLoader = function(aLoader,sound, location,volume,immediatePlaying){
     
-    //Github pages automation, get working later.
-    if(process.env.NODE_ENV == 'production'){
-        location ='/Rolodex-Portfolio/'+ location;
-    }
 
     aLoader.load(location, (buffer)=>{
         sound.setBuffer(buffer);

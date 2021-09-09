@@ -7,7 +7,9 @@ import {TrackballControls} from 'three/examples/jsm/controls/TrackballControls.j
 import test from "./subPages/testPage.js";
 import modelLoader from "./models/modelLoader.js";
 import mouseHandler from './scripts/mouseEventListeners.js';
+import soundLoader from './sounds/audioLoader.js';
 import TWEEN from '@tweenjs/tween.js';
+import Constants from './Constants.js';
 
 
 
@@ -145,12 +147,7 @@ const main = (function(){
             }
         }
         function playDefaultAudio(){
-            audioLoader.load('../src/sounds/Rolodex_Sounds_Drone.mp3', (buffer)=>{
-                ambient.setBuffer(buffer);
-                ambient.setLoop(true);
-                ambient.setVolume(.25);
-                ambient.play();
-            })
+            soundLoader(audioLoader,ambient, Constants.AUDIO_INITIAL_DRONE,.25,true)
         }
 
         init();

@@ -11,13 +11,11 @@ const modelLoader = function(){
     let dexLoc = '/src/models/Rolodex.glb';
     let tableAndRoomLoc = '/src/models/Rest_Of_Room.glb';
 
-    
-    //gh pages workaround.
+
     if (process.env.NODE_ENV == 'production'){
         buttonLoc = '/Rolodex-Project/' + buttonLoc;
         dexLoc = '/Rolodex-Project/' + dexLoc;
         tableAndRoomLoc = '/Rolodex-Project/' + tableAndRoomLoc;
-        console.log('FUCK IIIIIITTTTT');
     }
 
     let defaultButton = loader.loadAsync(

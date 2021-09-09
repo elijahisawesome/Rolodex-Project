@@ -35,17 +35,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
 
 
     function loadSounds(){
-        soundLoader(audioLoader, rolodexOpen, webpackAudioLoadingSubroutine(Constants.AUDIO_ROLODEX_OPEN), .2,true);
-        soundLoader(audioLoader, audioHoverSelect, webpackAudioLoadingSubroutine(Constants.AUDIO_BUTTON_HOVER), .025,false);
-        soundLoader(audioLoader, cardFlip,webpackAudioLoadingSubroutine(Constants.AUDIO_ROLODEX_CARD_FLIP),.8,true);
-    }
-    function webpackAudioLoadingSubroutine(loc){
-        let val = '/Rolodex-Project/';
-        let finalLoc = loc;
-        if(process.env.NODE_ENV == 'production'){
-            finalLoc = val+loc;
-        }
-        return finalLoc;
+        soundLoader(audioLoader, rolodexOpen, Constants.AUDIO_ROLODEX_OPEN, .2,true);
+        soundLoader(audioLoader, audioHoverSelect, Constants.AUDIO_BUTTON_HOVER, .025,false);
+        soundLoader(audioLoader, cardFlip, Constants.AUDIO_ROLODEX_CARD_FLIP,.8,true);
     }
     
     function listenForHovers(event){
