@@ -3,9 +3,11 @@ import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js';
 import battleshipPage from '../subPages/BattleshipPage.js';
 import CVPage from '../subPages/CVPage.js';
+import EtchASketchPage from '../subPages/EtchinSketchin.js';
 import soundLoader from '../sounds/audioLoader.js';
 import Constants from '../Constants.js';
 import { Vector2 } from 'three';
+
 
 let mouse = new THREE.Vector2();
 const rayCaster = new THREE.Raycaster();
@@ -80,33 +82,46 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
         switch(intersects[0].object.parent.name){
             case buttons[1].name:{
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
+                animationPlayer(mixer.clipAction(myDex.animations[4]));
+                animationPlayer(mixer.clipAction(myDex.animations[5]));
                 setTimeout (function(){
-                textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
-                currentURL = calculatorPage.URL;
-                }, 150)
+                    textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
+                    currentURL = calculatorPage.URL;
+                }, 250)
                 cardFlip.play();
                 break
             }
             case buttons[2].name:{
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
+                animationPlayer(mixer.clipAction(myDex.animations[4]));
+                animationPlayer(mixer.clipAction(myDex.animations[5]));
                 setTimeout (function(){
-                textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
-                currentURL = battleshipPage.URL;
-                }, 150)
+                    textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
+                    currentURL = battleshipPage.URL;
+                }, 250)
                 cardFlip.play();
                 break
             }
             case buttons[3].name:{
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
+                animationPlayer(mixer.clipAction(myDex.animations[4]));
+                animationPlayer(mixer.clipAction(myDex.animations[5]));
                 setTimeout(function(){
                     textureSetup(myDex.scene.children[8],CVPage.TextureInfo, CVPage.image);
-                currentURL = CVPage.URL;
-                })
+                    currentURL = CVPage.URL;
+                }, 250)
                 cardFlip.play();
                 break
             }
             case buttons[4].name:{
-                console.log('4');
+                animationPlayer(mixer.clipAction(myDex.animations[3]));
+                animationPlayer(mixer.clipAction(myDex.animations[4]));
+                animationPlayer(mixer.clipAction(myDex.animations[5]));
+                setTimeout(function(){
+                    textureSetup(myDex.scene.children[8],EtchASketchPage.TextureInfo, EtchASketchPage.image);
+                    currentURL = EtchASketchPage.URL;
+                }, 250)
+                cardFlip.play();
                 break
             }
             default:
