@@ -6,8 +6,8 @@ import CVPage from '../subPages/CVPage.js';
 import EtchASketchPage from '../subPages/EtchinSketchin.js';
 import soundLoader from '../sounds/audioLoader.js';
 import Constants from '../Constants.js';
-import { Vector2 } from 'three';
-import EtchASketchPage from '../subPages/EtchinSketchin.js';
+
+
 
 let mouse = new THREE.Vector2();
 const rayCaster = new THREE.Raycaster();
@@ -84,10 +84,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
-                animationPlayer(mixer.clipAction(myDex.animations[6]));
                 setTimeout (function(){
                     textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
-                currentURL = calculatorPage.URL;
+                    currentURL = calculatorPage.URL;
                 }, 250)
                 cardFlip.play();
                 break
@@ -96,10 +95,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
-                animationPlayer(mixer.clipAction(myDex.animations[6]));
                 setTimeout (function(){
                     textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
-                currentURL = battleshipPage.URL;
+                    currentURL = battleshipPage.URL;
                 }, 250)
                 cardFlip.play();
                 break
@@ -108,10 +106,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
-                animationPlayer(mixer.clipAction(myDex.animations[6]));
                 setTimeout(function(){
                     textureSetup(myDex.scene.children[8],CVPage.TextureInfo, CVPage.image);
-                currentURL = CVPage.URL;
+                    currentURL = CVPage.URL;
                 }, 250)
                 cardFlip.play();
                 break
@@ -120,10 +117,9 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[3]));
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
-                animationPlayer(mixer.clipAction(myDex.animations[6]));
                 setTimeout(function(){
                     textureSetup(myDex.scene.children[8],EtchASketchPage.TextureInfo, EtchASketchPage.image);
-                currentURL = EtchASketchPage.URL;
+                    currentURL = EtchASketchPage.URL;
                 }, 250)
                 cardFlip.play();
                 break

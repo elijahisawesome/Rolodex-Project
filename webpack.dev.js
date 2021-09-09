@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
-const { webpack } =require('webpack');
+const { EnvironmentPlugin } =require('webpack');
 
  module.exports = merge(common, {
    mode: 'development',
@@ -10,7 +10,7 @@ const { webpack } =require('webpack');
     contentBase: './dist',
    },
    plugins:[
-    new webpack.EnvironmentPlugin({
+    new EnvironmentPlugin({
       'NodeEnv': 'development'
     }),
   ],
