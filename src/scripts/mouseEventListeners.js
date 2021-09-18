@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js';
 import battleshipPage from '../subPages/BattleshipPage.js';
+import galleryPage from '../subPages/GalleryPage.js';
 import CVPage from '../subPages/CVPage.js';
 import EtchASketchPage from '../subPages/EtchinSketchin.js';
 import soundLoader from '../sounds/audioLoader.js';
@@ -73,8 +74,7 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
 
 
         try{        
-
-            if(intersects[0].object.name == myDex.scene.children[8].name){
+            if((intersects[0].object.name == myDex.scene.children[8].name) && !!currentURL){
                 window.location.href = currentURL;
                 return;
             }
@@ -96,8 +96,8 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
                 setTimeout (function(){
-                    textureSetup(myDex.scene.children[8],battleshipPage.TextureInfo, battleshipPage.image);
-                    currentURL = battleshipPage.URL;
+                    textureSetup(myDex.scene.children[8],galleryPage.TextureInfo, galleryPage.image);
+                    currentURL = galleryPage.URL;
                 }, 250)
                 cardFlip.play();
                 break
