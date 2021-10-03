@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import cameraMover from './cameraMover.js';
 import calculatorPage from '../subPages/CalculatorPage.js';
 import battleshipPage from '../subPages/BattleshipPage.js';
+import grocerystorePage from '../subPages/GroceryStore.js';
 import galleryPage from '../subPages/GalleryPage.js';
 import CVPage from '../subPages/CVPage.js';
 import EtchASketchPage from '../subPages/EtchinSketchin.js';
@@ -85,8 +86,8 @@ const mouseHandler = function(renderer, scene, myDex, buttons, camera, mixer, am
                 animationPlayer(mixer.clipAction(myDex.animations[4]));
                 animationPlayer(mixer.clipAction(myDex.animations[5]));
                 setTimeout (function(){
-                    textureSetup(myDex.scene.children[8],calculatorPage.TextureInfo, calculatorPage.image);
-                    currentURL = calculatorPage.URL;
+                    textureSetup(myDex.scene.children[8],grocerystorePage.TextureInfo, grocerystorePage.image);
+                    currentURL = grocerystorePage.URL;
                 }, 250)
                 cardFlip.play();
                 break
